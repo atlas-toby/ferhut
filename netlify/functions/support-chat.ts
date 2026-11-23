@@ -149,6 +149,17 @@ function isAdminIp(ip: string): boolean {
   return allowed.has(normalized);
 }
 
+function isAdminKeyValid(req: Request): boolean {
+  const configured = (process.env.ADMIN_KEY || "").trim();
+  if (!configured) return false;
+  const provided = (req.headers.get("x-admin-key") || "").trim();
+  if (!provided) return false;
+  const a = Buffer.from(configured);
+  const b = Buffer.from(provided);
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
+
 function buildCorsHeaders(req: Request, isAdmin: boolean): Record<string, string> {
   const origin = req.headers.get("origin");
   let reqOrigin = "";
@@ -161,7 +172,7 @@ function buildCorsHeaders(req: Request, isAdmin: boolean): Record<string, string
   const headers: Record<string, string> = {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, X-Admin-Key",
     "Cache-Control": "no-store",
     Vary: "Origin",
   };
@@ -464,7 +475,7 @@ async function generateInternReply(messages: SupportMessage[]): Promise<string> 
 
 export default async (req: Request, context: Context): Promise<Response> => {
   const clientIp = getClientIp(req, context);
-  const isAdmin = isAdminIp(clientIp);
+  const isAdmin = isAdminIp(clientIp) || isAdminKeyValid(req);
 
   if (req.method === "OPTIONS") {
     return new Response(null, {
