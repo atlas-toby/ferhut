@@ -152,8 +152,14 @@ function isAdminIp(ip: string): boolean {
 function isAdminKeyValid(req: Request): boolean {
   const configured = (process.env.ADMIN_KEY || "").trim();
   if (!configured) return false;
-  const provided = (req.headers.get("x-admin-key") || "").trim();
-  if (!provided) return false;
+  const rawProvided = (req.headers.get("x-admin-key") || "").trim();
+  if (!rawProvided) return false;
+  let provided = rawProvided;
+  try {
+    provided = decodeURIComponent(rawProvided);
+  } catch {
+    provided = rawProvided;
+  }
   const a = Buffer.from(configured);
   const b = Buffer.from(provided);
   if (a.length !== b.length) return false;

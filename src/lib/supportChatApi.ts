@@ -46,7 +46,7 @@ function buildHeaders(withJson = false): Record<string, string> {
   }
   const adminKey = getStoredAdminKey();
   if (adminKey) {
-    headers["X-Admin-Key"] = adminKey;
+    headers["X-Admin-Key"] = encodeURIComponent(adminKey);
   }
   return headers;
 }
