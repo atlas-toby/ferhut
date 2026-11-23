@@ -413,9 +413,12 @@ async function generateInternReply(messages: SupportMessage[]): Promise<string> 
         if (reply && !isTooSimilarToRecent(reply, previousAiTexts)) {
           return reply;
         }
+      } else {
+        const errBody = await res.text().catch(() => "");
+        console.error("[support-chat] Gemini API error:", res.status, errBody);
       }
-    } catch {
-      // Fall through to Groq or static fallback
+    } catch (err) {
+      console.error("[support-chat] Gemini fetch failed:", err);
     }
   }
 
