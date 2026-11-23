@@ -1,6 +1,9 @@
 node_modules
 dist
 .netlify
+.env
+.aistudio/
 data/comments.json
+data/support-chat.json
 *.local
 .DS_Store
