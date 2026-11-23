@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 14% 97%;
+    --foreground: 240 6% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 12%;
+    --primary: 211 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 6% 93%;
+    --secondary-foreground: 240 6% 14%;
+    --muted: 240 6% 93%;
+    --muted-foreground: 240 4% 43%;
+    --accent: 240 6% 91%;
+    --accent-foreground: 240 6% 12%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 88%;
+    --input: 240 6% 86%;
+    --ring: 211 100% 45%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 240 10% 96%;
+    --card: 240 7% 8%;
+    --card-foreground: 240 10% 96%;
+    --popover: 240 7% 9%;
+    --popover-foreground: 240 10% 96%;
+    --primary: 211 100% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 6% 13%;
+    --secondary-foreground: 240 10% 95%;
+    --muted: 240 6% 13%;
+    --muted-foreground: 240 5% 60%;
+    --accent: 240 6% 16%;
+    --accent-foreground: 240 10% 96%;
+    --destructive: 0 74% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 5% 17%;
+    --input: 240 5% 19%;
+    --ring: 211 100% 56%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .dark body {
+    letter-spacing: 0.008em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .glass-header {
+    background-color: hsl(var(--background) / 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .glass-dock {
+    background-color: hsl(var(--card) / 0.78);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+  }
+
+  .apple-surface {
+    @apply bg-card border border-border/80 shadow-apple-sm dark:shadow-apple-dark-sm;
+  }
+
+  .apple-surface-elevated {
+    @apply bg-card border border-border/80 shadow-apple-md dark:shadow-apple-dark-md;
+  }
+
+  .apple-surface-floating {
+    @apply bg-card border border-border/75 shadow-apple-lg dark:shadow-apple-dark-lg;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

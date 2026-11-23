@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="tr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ferhat Kargo — Modern Lojistik &amp; Müze</title>
+    <meta
+      name="description"
+      content="Ferhat Kargo sipariş sorgulama, filo standartları ve Ferhat'ın Müzesi video arşivi."
+    />
+    <meta property="og:title" content="Ferhat Kargo — Modern Lojistik &amp; Müze" />
+    <meta
+      property="og:description"
+      content="Ferhat Kargo sipariş sorgulama, filo standartları ve Ferhat'ın Müzesi video arşivi."
+    />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("ferhat-theme");
+          if (saved === "light") {
+            document.documentElement.classList.remove("dark");
+          } else {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-background text-foreground antialiased selection:bg-primary/20 selection:text-foreground">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
