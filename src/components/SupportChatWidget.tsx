@@ -193,7 +193,7 @@ export function SupportChatWidget() {
     if (!isOpen || isAdmin) return;
     const timer = window.setTimeout(() => {
       sendCustomerDraft(sessionId, customerInput);
-    }, 350);
+    }, 200);
     return () => window.clearTimeout(timer);
   }, [customerInput, isOpen, isAdmin, sessionId]);
   const [customerSending, setCustomerSending] = useState(false);
@@ -259,13 +259,13 @@ export function SupportChatWidget() {
 
     if (isAdmin && adminViewMode === "admin") {
       refreshAdminSessions();
-      const timer = window.setInterval(() => refreshAdminSessions(false), 3000);
+      const timer = window.setInterval(() => refreshAdminSessions(false), 1500);
       return () => window.clearInterval(timer);
     }
 
     if (isOpen) {
       refreshCustomer();
-      const timer = window.setInterval(refreshCustomer, 3000);
+      const timer = window.setInterval(refreshCustomer, 1500);
       return () => window.clearInterval(timer);
     }
   }, [
@@ -400,14 +400,43 @@ export function SupportChatWidget() {
     const trimmed = adminInput.trim();
     if (!trimmed) return;
 
+    const targetId = selectedAdminSession.id;
+    const tempId = `optimistic-admin-${Date.now()}`;
+    const optimisticMsg: SupportMessage = {
+      id: tempId,
+      sender: "admin",
+      text: trimmed,
+      createdAt: new Date().toISOString(),
+    };
+
     setAdminBusy(true);
     setAdminInput("");
+    setAllSessions((prev) =>
+      prev.map((s) =>
+        s.id === targetId
+          ? {
+              ...s,
+              status: "admin",
+              messages: [...s.messages, optimisticMsg],
+              updatedAt: optimisticMsg.createdAt,
+            }
+          : s
+      )
+    );
+
     try {
-      const updated = await sendAdminReply(selectedAdminSession.id, trimmed);
+      const updated = await sendAdminReply(targetId, trimmed);
       setAllSessions((prev) =>
         prev.map((s) => (s.id === updated.id ? updated : s))
       );
     } catch (err) {
+      setAllSessions((prev) =>
+        prev.map((s) =>
+          s.id === targetId
+            ? { ...s, messages: s.messages.filter((m) => m.id !== tempId) }
+            : s
+        )
+      );
       toast(err instanceof Error ? err.message : "Yanıt gönderilemedi.");
       setAdminInput(trimmed);
     } finally {
