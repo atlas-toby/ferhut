@@ -220,7 +220,7 @@ function writeLocalSessions(sessions: Record<string, SupportSession>): void {
 
 async function loadAllSessions(): Promise<Record<string, SupportSession>> {
   try {
-    const store = getStore(STORE_NAME);
+    const store = getStore({ name: STORE_NAME, consistency: "strong" });
     const existing = (await store.get(SESSIONS_KEY, { type: "json" })) as
       | Record<string, SupportSession>
       | null;
@@ -239,7 +239,7 @@ async function saveAllSessions(
   const trimmed = Object.fromEntries(entries);
 
   try {
-    const store = getStore(STORE_NAME);
+    const store = getStore({ name: STORE_NAME, consistency: "strong" });
     await store.setJSON(SESSIONS_KEY, trimmed);
   } catch {
     writeLocalSessions(trimmed);
